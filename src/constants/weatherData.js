@@ -1,5 +1,4 @@
-const BASE_URL = 'https://ibnux.github.io/BMKG-importer';
-const WEATHER_PATH = 'cuaca';
-const AREA_ENDPOINT = 'wilayah.json';
+const BASE_URL = 'https://api.openweathermap.org';
+const WEATHER_ENDPOINT = 'data/2.5/weather';
 
-export { AREA_ENDPOINT, BASE_URL, WEATHER_PATH };
+export { BASE_URL, WEATHER_ENDPOINT };

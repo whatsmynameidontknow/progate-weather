@@ -1,24 +1,56 @@
-import { Image, StyleSheet, Text, View } from "react-native";
+import { Image, StyleSheet, Text, View } from 'react-native';
 
 export default function WeatherInfo({ data }) {
     return (
         <View style={styles.marginTop20}>
-            <Text style={styles.text}>{data.name}</Text>
-            <Text style={[styles.temperature, styles.marginTop20]}>{data.tempC} °C</Text>
+            <Text style={[styles.textCenter, styles.bold, styles.textBig]}>
+                {data.name}
+            </Text>
+            <Text style={[styles.temperature, styles.marginTop20]}>
+                {data.main.temp} °C
+            </Text>
             <View style={[styles.rowContainer, styles.marginTop20]}>
                 <Image
-                    source={{ uri: `https://ibnux.github.io/BMKG-importer/icon/${data.kodeCuaca}.png` }}
+                    source={{
+                        uri: `https://openweathermap.org/img/wn/${data.weather[0].icon}.png`,
+                    }}
                     width={100}
                     height={100}
-                    style={styles.weatherIcon} />
-                <Text style={[styles.text, styles.bold]}>{data.cuaca}</Text>
+                    style={styles.weatherIcon}
+                />
+                <Text style={[styles.textCenter, styles.bold]}>
+                    {data.weather[0].main}
+                </Text>
+            </View>
+            <Text style={[styles.textCenter, styles.marginLeft15]}>
+                {data.weather[0].description}
+            </Text>
+            <View style={[styles.rowContainer, styles.marginTop20]}>
+                <Text style={[styles.textCenter, styles.bold]}>
+                    Kelembaban:{' '}
+                </Text>
+                <Text style={[styles.textCenter, styles.marginLeft15]}>
+                    {data.main.humidity} %
+                </Text>
             </View>
             <View style={[styles.rowContainer, styles.marginTop20]}>
-                <Text style={[styles.text, styles.bold]}>Kelembaban: </Text>
-                <Text style={[styles.text, styles.marginLeft15]}>{data.humidity} %</Text>
+                <Text style={[styles.textCenter, styles.bold]}>
+                    Jarak Pandang:{' '}
+                </Text>
+                <Text style={[styles.textCenter, styles.marginLeft15]}>
+                    {data.visibility / 1000} km
+                </Text>
+            </View>
+            <View style={[styles.rowContainer, styles.marginTop20]}>
+                <Text style={[styles.textCenter, styles.bold]}>
+                    Kecepatan Angin:{' '}
+                </Text>
+                <Text style={[styles.textCenter, styles.marginLeft15]}>
+                    {data.wind.speed} m/s
+                </Text>
             </View>
         </View>
-    )
+    );
 }
 
 const styles = StyleSheet.create({
@@ -28,12 +60,14 @@ const styles = StyleSheet.create({
     marginLeft15: {
         marginLeft: 15,
     },
-    text: {
+    textCenter: {
         textAlign: 'center',
-        fontSize: 16,
     },
     bold: {
-        fontWeight: 900,
+        fontWeight: '900',
+    },
+    textBig: {
+        fontSize: 32,
     },
     rowContainer: {
         flexDirection: 'row',
@@ -49,4 +83,4 @@ const styles = StyleSheet.create({
         width: 50,
         height: 50,
     },
-})
+});

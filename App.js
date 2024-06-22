@@ -4,11 +4,7 @@ import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
 import Weather from './src/components/WeatherInfo';
 import SearchWater from './src/components/WeatherSearch';
 import States from './src/constants/states';
-import {
-    AREA_ENDPOINT,
-    BASE_URL,
-    WEATHER_PATH,
-} from './src/constants/weatherData';
+import { BASE_URL, WEATHER_ENDPOINT } from './src/constants/weatherData';
 
 export default function App() {
     const [weatherData, setWeatherData] = useState();
@@ -23,36 +19,19 @@ export default function App() {
         }
         setState(States.LOADING);
         axios
-            .get(`${BASE_URL}/${WEATHER_PATH}/${AREA_ENDPOINT}`)
+            .get(
+                `${BASE_URL}/${WEATHER_ENDPOINT}?q=${searchQuery}&units=metric&appid=${process.env.EXPO_PUBLIC_OPENWEATHERMAP_API_KEY}`
+            )
             .then((res) => {
-                const areaID = res.data.find(
-                    (area) =>
-                        area.kecamatan.toLowerCase() ===
-                        searchQuery.toLowerCase()
-                )?.id;
-                return areaID;
+                setWeatherData(res.data);
+                setState(States.SUCCESS);
             })
-            .then((areaID) => {
-                axios
-                    .get(`${BASE_URL}/${WEATHER_PATH}/${areaID}.json`)
-                    .then((res) => {
-                        setWeatherData({
-                            ...res.data[0],
-                            name:
-                                searchQuery.charAt(0).toUpperCase() +
-                                searchQuery.slice(1),
-                        });
-                        setState(States.SUCCESS);
-                    })
-                    .catch((e) => {
-                        if (e.response?.status === 404) {
-                            setState(States.NOT_FOUND);
-                        } else {
-                            setState(States.FAILED);
-                        }
-                    });
-            })
-            .catch(() => {
+            .catch((e) => {
+                console.error(e);
+                if (e.response.status === 404) {
+                    setState(States.NOT_FOUND);
+                    return;
+                }
                 setState(States.FAILED);
             });
     }, [searchQuery]);
