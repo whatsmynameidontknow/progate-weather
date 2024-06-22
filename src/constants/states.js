@@ -3,6 +3,7 @@ const States = Object.freeze({
     SUCCESS: Symbol('success'),
     NOT_FOUND: Symbol('not_found'),
     FAILED: Symbol('failed'),
+    FIRST_LOAD: Symbol('first_load'),
 });
 
 export default States;

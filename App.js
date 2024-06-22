@@ -13,7 +13,7 @@ import {
 export default function App() {
     const [weatherData, setWeatherData] = useState();
     const [searchQuery, setSearchQuery] = useState();
-    const [state, setState] = useState();
+    const [state, setState] = useState(States.FIRST_LOAD);
     const firstUpdate = useRef(true);
 
     useEffect(() => {
@@ -61,6 +61,17 @@ export default function App() {
         <View style={styles.container}>
             <SearchWater onPress={setSearchQuery} />
             <View style={{ marginTop: 20 }}>
+                {state === States.FIRST_LOAD && (
+                    <Text
+                        style={{
+                            fontSize: 40,
+                            fontWeight: 800,
+                            textAlign: 'center',
+                        }}
+                    >
+                        Masukkan nama wilayah
+                    </Text>
+                )}
                 {state === States.LOADING && <ActivityIndicator size="large" />}
                 {state === States.SUCCESS && <Weather data={weatherData} />}
                 {state === States.FAILED && (
